@@ -79,3 +79,25 @@ deactivate
 ```
 
 ---
+
+### Notes
+
+- We (Always) need (Love) Automation!
+
+- Over 40% of LLMOps (LMOps) is about creating Tools!
+   - First : For Yourself
+   - Second: For Your Families
+   - Third : For Your Friends
+   - Forth : For Companies!
+
+- Philosophy: Based on AI Agentic Workflow:
+    - Search in web
+    - Web Scraping
+    - Download .pdf files
+    - Convert .pdf file to .txt file (Normal, OCR, …)
+    - [Translate .txt file]
+    - Convert .txt file to .docx file
+    - Format docx styles
+    - Convert docx to pdf
+    - [[Protect .pdf file]]
+    - Publish .pdf file in Social Networks

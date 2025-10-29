@@ -1,6 +1,4 @@
 # **************************************************
-# Version 1.4
-# **************************************************
 # Simple Installation:
 # - Download and Install Python:
 #   - https://www.python.org/downloads
@@ -10,6 +8,9 @@
 # > python -m pip install -U rich
 # > python -m pip install -U pypdf
 # > python -m pip install -U cryptography
+#
+# - For Testing:
+# > python .\dt_protect_pdf.py .\test\test.pdf
 #
 # - For Running:
 # > python dt_protect_pdf c:\googooli\magooli.pdf
@@ -27,7 +28,7 @@ from pypdf import PdfReader
 from pypdf import PdfWriter
 from pypdf.constants import UserAccessPermissions
 
-VERSION: str = "1.4"
+VERSION: str = "1.5"
 USER_PASSWORD: str = ""
 ALGORITHM: str = "AES-256-R5"
 OWNER_PASSWORD: str = str(uuid.uuid4())
@@ -126,16 +127,13 @@ def main() -> None:
 
     os.system(command="cls" if os.name == "nt" else "clear")
 
-    parser = argparse.ArgumentParser(
-        description="You must specify the 'PDF' file path!",
-    )
+    description: str = "You must specify the 'PDF' file path!"
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument("file_path", help="'PDF' file path")
     args = parser.parse_args()
     source_pdf_file_path: str = args.file_path
 
-    protect_pdf_file(
-        file_path=source_pdf_file_path,
-    )
+    protect_pdf_file(file_path=source_pdf_file_path)
 
     print("Finished.\n")
 
