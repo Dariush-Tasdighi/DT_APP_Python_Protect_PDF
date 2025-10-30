@@ -28,19 +28,10 @@ from pypdf import PdfReader
 from pypdf import PdfWriter
 from pypdf.constants import UserAccessPermissions
 
-VERSION: str = "1.5"
+VERSION: str = "1.6"
 USER_PASSWORD: str = ""
 ALGORITHM: str = "AES-256-R5"
 OWNER_PASSWORD: str = str(uuid.uuid4())
-
-
-def split_file_path(file_path: str) -> Tuple[str, str, str]:
-    """Split file path"""
-
-    directory, filename = os.path.split(p=file_path)
-    name, extension = os.path.splitext(p=filename)
-
-    return directory, name, extension
 
 
 def validate_pdf_file_path(file_path: str) -> None:
@@ -59,6 +50,15 @@ def validate_pdf_file_path(file_path: str) -> None:
     if source_file_extension != ".pdf":
         print(f"[-] The file '{file_path}' is not 'pdf' file!\n")
         exit()
+
+
+def split_file_path(file_path: str) -> Tuple[str, str, str]:
+    """Split file path"""
+
+    directory, filename = os.path.split(p=file_path)
+    name, extension = os.path.splitext(p=filename)
+
+    return directory, name, extension
 
 
 def create_target_pdf_file_path(source_pdf_file_path: str) -> str:
@@ -88,12 +88,12 @@ def protect_pdf_file(file_path: str):
     reader = PdfReader(stream=file_path)
     writer = PdfWriter(fileobj=reader)
 
-    utc_time = "+03'30'"
-    time = datetime.now().strftime(
+    utc_time: str = "+03'30'"
+    time: str = datetime.now().strftime(
         format=f"D\072%Y%m%d%H%M%S{utc_time}",
     )
 
-    infos = {
+    infos: dict = {
         "/ModDate": time,
         "/CreationDate": time,
         "/Title": "Dariush Tasdighi",
@@ -109,6 +109,9 @@ def protect_pdf_file(file_path: str):
     writer.add_metadata(infos=infos)
 
     permissions_flag: UserAccessPermissions = 0  # type: ignore
+
+    # اگر می‌خواهیم مثلا به کاربر، دسترسی چاپ بدهیم
+    # permissions_flag: UserAccessPermissions = UserAccessPermissions.PRINT
 
     writer.encrypt(
         use_128bit=True,
@@ -131,6 +134,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument("file_path", help="'PDF' file path")
     args = parser.parse_args()
+
     source_pdf_file_path: str = args.file_path
 
     protect_pdf_file(file_path=source_pdf_file_path)
