@@ -28,10 +28,21 @@ from pypdf import PdfReader
 from pypdf import PdfWriter
 from pypdf.constants import UserAccessPermissions
 
-VERSION: str = "1.6"
+VERSION: str = "1.8"
 USER_PASSWORD: str = ""
-ALGORITHM: str = "AES-256-R5"
 OWNER_PASSWORD: str = str(uuid.uuid4())
+
+# The algorithm can be one of:
+# - RC4-40
+# - RC4-128
+#
+# - AES-128
+# - AES-256
+# - AES-256-R5
+#
+# We recommend using AES-256-R5:
+# > python -m pip install -U cryptography
+ALGORITHM: str = "AES-256-R5"
 
 
 def validate_pdf_file_path(file_path: str) -> None:
@@ -45,9 +56,9 @@ def validate_pdf_file_path(file_path: str) -> None:
         print(f"[-] The file '{file_path}' does not exist!\n")
         exit()
 
-    source_file_extension: str = pathlib.Path(file_path).suffix.lower()
+    file_extension: str = pathlib.Path(file_path).suffix.lower()
 
-    if source_file_extension != ".pdf":
+    if file_extension != ".pdf":
         print(f"[-] The file '{file_path}' is not 'pdf' file!\n")
         exit()
 
@@ -74,7 +85,7 @@ def create_target_pdf_file_path(source_pdf_file_path: str) -> str:
     return result
 
 
-def protect_pdf_file(file_path: str):
+def protect_pdf_file(file_path: str) -> None:
     """Protect PDF file"""
 
     validate_pdf_file_path(
@@ -86,24 +97,38 @@ def protect_pdf_file(file_path: str):
     )
 
     reader = PdfReader(stream=file_path)
+
+    # Solution (1)
+    # writer = PdfWriter()
+    # for page in reader.pages:
+    #     writer.add_page(page=page)
+    # /Solution (1)
+
+    # Solution (2)
     writer = PdfWriter(fileobj=reader)
+    # /Solution (2)
 
     utc_time: str = "+03'30'"
     time: str = datetime.now().strftime(
         format=f"D\072%Y%m%d%H%M%S{utc_time}",
     )
 
+    text: str = "Dariush Tasdighi"
+
     infos: dict = {
         "/ModDate": time,
         "/CreationDate": time,
-        "/Title": "Dariush Tasdighi",
-        "/Author": "Dariush Tasdighi",
-        "/Creator": "Dariush Tasdighi",
-        "/Subject": "Dariush Tasdighi",
-        "/Keywords": "Dariush Tasdighi",
+        #
+        "/Title": text,
+        "/Author": text,
+        "/Creator": text,
+        "/Subject": text,
+        "/Keywords": text,
+        #
+        "/CustomField_1": text,
+        "/CustomField_2": text,
+        #
         "/Producer": f"DT Protect PDF - Version: {VERSION}",
-        "/CustomField_1": "Dariush Tasdighi",
-        "/CustomField_2": "Dariush Tasdighi",
     }
 
     writer.add_metadata(infos=infos)
@@ -129,6 +154,9 @@ def main() -> None:
     """Main of program"""
 
     os.system(command="cls" if os.name == "nt" else "clear")
+
+    # print(OWNER_PASSWORD)  # Test
+    # exit()  # Test
 
     description: str = "You must specify the 'PDF' file path!"
     parser = argparse.ArgumentParser(description=description)
