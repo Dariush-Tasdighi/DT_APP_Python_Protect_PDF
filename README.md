@@ -2,12 +2,14 @@
 
 ### This program was developed by:
 
-- **Dariush Tasdighi**
+- **Dariush Tasdighi** From Iran / Tehran
     - Cell Phone Number: 09121087461
     - Email Address: DariushT@GMail.com
+    - Telegram Channels:
+        - https://t.me/IranianExperts
+        - https://t.me/DT_PYTHON_LEARNING
     - LinkedIn: https://www.linkedin.com/in/tasdighi
-    - Telegram Channel: https://t.me/IranianExperts
-    - Telegram Channel: https://t.me/DT_PYTHON_LEARNING
+    - Instagram: https://www.instagram.com/dariushtasdighi/
 
 ---
 
